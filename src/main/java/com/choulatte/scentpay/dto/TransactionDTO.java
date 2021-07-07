@@ -12,9 +12,8 @@ import java.util.Date;
 @AllArgsConstructor
 @Getter
 @Builder
-public class TransactionDTO {
+public class TransactionDTO extends TransactionIdDTO {
 
-    private Long id;
     private Long accountId;
     private TransactionType type;
     private Long amount;

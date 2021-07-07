@@ -9,9 +9,8 @@ import java.util.Date;
 @AllArgsConstructor
 @Getter
 @Builder
-public class HoldingDTO {
+public class HoldingDTO extends HoldingIdDTO {
 
-    private Long id;
     private Long accountId;
     private Long amount;
     private Long balance;
