@@ -7,9 +7,9 @@ import java.util.Optional;
 
 public interface AccountService {
 
-    Optional<AccountDTO> createAccount(AccountDTO accountDTO);
-    Optional<AccountDTO> getAccountInfo(AccountDTO accountDTO);
-    Optional<AccountDTO> updateAccountInfo(AccountDTO accountDTO);
+    AccountDTO createAccount(AccountDTO accountDTO);
+    Optional<AccountDTO> getAccountInfo(long accountId);
+    AccountDTO updateAccountInfo(AccountDTO accountDTO);
     Optional<TransactionDTO> deposit(DepositDTO depositDTO);
     Optional<TransactionDTO> withdraw(WithdrawalDTO withdrawalDTO);
     Optional<HoldingDTO> getHoldingInfo(long accountId);

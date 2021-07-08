@@ -1,5 +1,6 @@
 package com.choulatte.scentpay.application;
 
+import com.choulatte.scentpay.domain.Account;
 import com.choulatte.scentpay.dto.*;
 import com.choulatte.scentpay.repository.AccountRepository;
 import com.choulatte.scentpay.repository.HoldingRepository;
@@ -19,18 +20,23 @@ public class AccountServiceImpl implements AccountService{
     private final HoldingRepository holdingRepository;
 
     @Override
-    public Optional<AccountDTO> createAccount(AccountDTO accountDTO) {
-        return Optional.empty();
+    public AccountDTO createAccount(AccountDTO accountDTO) {
+        return new AccountDTO(accountRepository.save(Account.newInstance(accountDTO)));
     }
 
     @Override
-    public Optional<AccountDTO> getAccountInfo(AccountDTO accountDTO) {
-        return Optional.empty();
+    public Optional<AccountDTO> getAccountInfo(long accountId) {
+        return getAccount(accountId).map(AccountDTO::new);
     }
 
     @Override
-    public Optional<AccountDTO> updateAccountInfo(AccountDTO accountDTO) {
-        return Optional.empty();
+    public AccountDTO updateAccountInfo(AccountDTO accountDTO) {
+        return new AccountDTO(accountRepository.save(getAccount(accountDTO.getId())
+                .orElseThrow(RuntimeException::new).updateInfo(accountDTO)));
+    }
+
+    private Optional<Account> getAccount(long accountId) {
+        return accountRepository.findById(accountId);
     }
 
     @Override

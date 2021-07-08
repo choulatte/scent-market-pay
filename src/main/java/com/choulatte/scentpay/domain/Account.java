@@ -1,5 +1,6 @@
 package com.choulatte.scentpay.domain;
 
+import com.choulatte.scentpay.dto.AccountDTO;
 import lombok.*;
 
 import javax.persistence.*;
@@ -49,4 +50,19 @@ public class Account {
     @OneToMany(mappedBy = "account")
     private List<Transaction> transactionList;
 
+    public Account updateInfo(AccountDTO accountDTO) {
+        this.statusType = accountDTO.getStatusType();
+        this.lastModifiedDate = new Date();
+
+        return this;
+    }
+
+    public static Account newInstance(AccountDTO accountDTO) {
+        return Account.builder().userId(accountDTO.getUserId())
+                .balance(0L)
+                .registeredDate(new Date())
+                .lastModifiedDate(new Date())
+                .statusType(AccountStatusType.NORMAL)
+                .isValid(true).build();
+    }
 }
