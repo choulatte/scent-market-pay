@@ -1,5 +1,6 @@
 package com.choulatte.scentpay.dto;
 
+import com.choulatte.scentpay.domain.Account;
 import com.choulatte.scentpay.domain.Transaction;
 import com.choulatte.scentpay.domain.TransactionType;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Builder
 public class TransactionDTO extends TransactionIdDTO {
 
     private Long accountId;
@@ -30,5 +32,14 @@ public class TransactionDTO extends TransactionIdDTO {
         this.balance = transaction.getBalance();
         this.label = transaction.getLabel();
         this.recordedDate = transaction.getRecordedDate();
+    }
+
+    public Transaction toEntity(Account account) {
+        return Transaction.builder().account(account)
+                .amount(this.amount)
+                .balance(this.balance)
+                .type(this.type)
+                .label(this.label)
+                .recordedDate(new Date()).build();
     }
 }

@@ -18,15 +18,14 @@ public class AccountDTO {
     private Date registeredDate;
     private Date lastModifiedDate;
     private AccountStatusType statusType;
-    private boolean isValid;
+    private Boolean validity;
 
-    public AccountDTO(Account account) {
-        this.id = account.getId();
-        this.userId = account.getUserId();
-        this.balance = account.getBalance();
-        this.registeredDate = account.getRegisteredDate();
-        this.lastModifiedDate = account.getLastModifiedDate();
-        this.statusType = account.getStatusType();
-        this.isValid = account.getValidity();
+    public Account toEntity() {
+        return Account.builder().userId(this.userId)
+                .balance(0L)
+                .registeredDate(new Date())
+                .lastModifiedDate(new Date())
+                .statusType(AccountStatusType.NORMAL)
+                .validity(this.validity).build();
     }
 }

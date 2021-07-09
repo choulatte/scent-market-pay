@@ -11,8 +11,8 @@ public interface AccountService {
     Optional<AccountDTO> getAccountInfo(long accountId);
     List<AccountDTO> getAccountInfoList(long userId);
     AccountDTO updateAccountInfo(AccountDTO accountDTO);
-    TransactionDTO deposit(DepositDTO depositDTO);
-    TransactionDTO withdraw(WithdrawalDTO withdrawalDTO);
+    TransactionDTO deposit(DepositReqDTO depositReqDTO);
+    TransactionDTO withdraw(WithdrawalReqDTO withdrawalReqDTO);
     Optional<HoldingDTO> getHoldingInfo(long accountId);
     List<HoldingDTO> getHoldingList(long accountId);
     List<TransactionDTO> getTransactionList(long accountId);

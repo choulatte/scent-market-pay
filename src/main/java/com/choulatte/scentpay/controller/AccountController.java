@@ -37,14 +37,14 @@ public class AccountController {
 
     @PutMapping(value = "/deposits")
     @ApiOperation(value = "입금", notes = "사용자의 계좌에 입금합니다.")
-    public ResponseEntity<TransactionDTO> deposit(@RequestBody DepositDTO req) {
-        return ResponseEntity.accepted().build();
+    public ResponseEntity<TransactionDTO> deposit(@RequestBody DepositReqDTO req) {
+        return ResponseEntity.ok(accountService.deposit(req));
     }
 
     @PutMapping(value = "/withdrawals")
     @ApiOperation(value = "출금", notes = "사용자의 계좌에서 출금합니다.")
-    public ResponseEntity<TransactionDTO> withdrawal(@RequestBody WithdrawalDTO req) {
-        return ResponseEntity.accepted().build();
+    public ResponseEntity<TransactionDTO> withdrawal(@RequestBody WithdrawalReqDTO req) {
+        return ResponseEntity.ok(accountService.withdraw(req));
     }
 
 }

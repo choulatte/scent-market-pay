@@ -1,6 +1,5 @@
 package com.choulatte.scentpay.domain;
 
-import com.choulatte.scentpay.dto.DepositDTO;
 import com.choulatte.scentpay.dto.TransactionDTO;
 import lombok.*;
 
@@ -40,13 +39,4 @@ public class Transaction {
     @Temporal(value = TemporalType.TIMESTAMP)
     @Column(name = "recorded_date", nullable = false)
     private Date recordedDate;
-
-    public static Transaction newInstance(TransactionDTO transactionDTO, Account account) {
-        return Transaction.builder().account(account)
-                .amount(transactionDTO.getAmount())
-                .balance(account.getBalance())
-                .type(transactionDTO.getType())
-                .label(transactionDTO.getLabel())
-                .recordedDate(new Date()).build();
-    }
 }
