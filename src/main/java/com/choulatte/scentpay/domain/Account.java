@@ -1,6 +1,8 @@
 package com.choulatte.scentpay.domain;
 
 import com.choulatte.scentpay.dto.AccountDTO;
+import com.choulatte.scentpay.dto.DepositDTO;
+import com.choulatte.scentpay.dto.WithdrawalDTO;
 import lombok.*;
 
 import javax.persistence.*;
@@ -41,8 +43,8 @@ public class Account {
     private AccountStatusType statusType;
 
     @Setter
-    @Column(name = "validation", nullable = false)
-    private Boolean isValid;
+    @Column(name = "validity", nullable = false)
+    private Boolean validity;
 
     @OneToMany(mappedBy = "account")
     private List<Holding> holdingList;
@@ -57,12 +59,29 @@ public class Account {
         return this;
     }
 
+    public Account applyTransaction(Transaction transaction) {
+        if (!this.userId.equals(transaction.getAccount().getUserId())) return this; // TODO: throw exception
+        if (this.statusType == AccountStatusType.FREEZING || !this.getValidity()) return this; // TODO: throw exception
+
+        switch (transaction.getType()) {
+            case DEPOSIT:
+                this.balance -= transaction.getAmount();
+                break;
+            case WITHDRAWAL:
+                this.balance += transaction.getAmount();
+        }
+
+        this.lastModifiedDate = new Date();
+
+        return this;
+    }
+
     public static Account newInstance(AccountDTO accountDTO) {
         return Account.builder().userId(accountDTO.getUserId())
                 .balance(0L)
                 .registeredDate(new Date())
                 .lastModifiedDate(new Date())
                 .statusType(AccountStatusType.NORMAL)
-                .isValid(true).build();
+                .validity(true).build();
     }
 }

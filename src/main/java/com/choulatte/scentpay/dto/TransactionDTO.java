@@ -21,7 +21,7 @@ public class TransactionDTO extends TransactionIdDTO {
     private String label;
     private Date recordedDate;
 
-    TransactionDTO(Transaction transaction) {
+    public TransactionDTO(Transaction transaction) {
         super(transaction);
 
         this.accountId = transaction.getAccount().getId();

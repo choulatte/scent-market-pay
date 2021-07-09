@@ -12,7 +12,7 @@ public class HoldingIdDTO extends PaymentTypeDTO {
 
     private Long id;
 
-    HoldingIdDTO(Holding holding) {
+    public HoldingIdDTO(Holding holding) {
         this.id = holding.getId();
     }
 }

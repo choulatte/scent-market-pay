@@ -12,7 +12,7 @@ public class TransactionIdDTO extends PaymentTypeDTO {
 
     private Long id;
 
-    TransactionIdDTO(Transaction transaction) {
+    public TransactionIdDTO(Transaction transaction) {
         this.id = transaction.getId();
     }
 }

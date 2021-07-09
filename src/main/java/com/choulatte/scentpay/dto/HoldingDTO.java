@@ -19,7 +19,7 @@ public class HoldingDTO extends HoldingIdDTO {
     private Date lastModifiedDate;
     private HoldingStatusType statusType;
 
-    HoldingDTO(Holding holding) {
+    public HoldingDTO(Holding holding) {
         super(holding);
 
         this.accountId = holding.getAccount().getId();

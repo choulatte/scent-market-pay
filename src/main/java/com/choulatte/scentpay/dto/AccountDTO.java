@@ -18,7 +18,7 @@ public class AccountDTO {
     private Date registeredDate;
     private Date lastModifiedDate;
     private AccountStatusType statusType;
-    private Boolean isValid;
+    private boolean isValid;
 
     public AccountDTO(Account account) {
         this.id = account.getId();
@@ -27,6 +27,6 @@ public class AccountDTO {
         this.registeredDate = account.getRegisteredDate();
         this.lastModifiedDate = account.getLastModifiedDate();
         this.statusType = account.getStatusType();
-        this.isValid = account.getIsValid();
+        this.isValid = account.getValidity();
     }
 }
