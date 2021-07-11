@@ -1,21 +1,13 @@
 package com.choulatte.scentpay.application;
 
 import com.choulatte.scentpay.domain.Account;
-import com.choulatte.scentpay.domain.AccountStatusType;
-import com.choulatte.scentpay.domain.Transaction;
 import com.choulatte.scentpay.dto.*;
-import com.choulatte.scentpay.exception.AccountBalanceShortageException;
-import com.choulatte.scentpay.exception.AccountIllegalStateException;
 import com.choulatte.scentpay.exception.AccountNotFoundException;
 import com.choulatte.scentpay.repository.AccountRepository;
-import com.choulatte.scentpay.repository.HoldingRepository;
-import com.choulatte.scentpay.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,7 +23,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountDTO getAccountInfo(long accountId) {
-        return getAccount(accountId).map(Account::toDTO).orElseThrow(AccountNotFoundException::new);
+        return getAccount(accountId).toDTO();
     }
 
     @Override
@@ -41,12 +33,11 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountDTO updateAccountInfo(AccountDTO accountDTO) {
-        return accountRepository.save(getAccount(accountDTO.getId())
-                .orElseThrow(AccountNotFoundException::new).updateInfo(accountDTO)).toDTO();
+        return accountRepository.save(getAccount(accountDTO.getId()).updateInfo(accountDTO)).toDTO();
     }
 
-    private Optional<Account> getAccount(long accountId) {
-        return accountRepository.findByIdAndValidityIsTrue(accountId);
+    private Account getAccount(long accountId) {
+        return accountRepository.findByIdAndValidityIsTrue(accountId).orElseThrow(AccountNotFoundException::new);
     }
 
     private List<Account> getAccountList(long userId) {

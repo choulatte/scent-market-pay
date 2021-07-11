@@ -3,6 +3,6 @@ package com.choulatte.scentpay.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(value = HttpStatus.CONFLICT)
-public class AccountIllegalStateException extends IllegalStateException {
+@ResponseStatus(HttpStatus.NOT_FOUND)
+public class HoldingNotFoundException extends RuntimeException {
 }

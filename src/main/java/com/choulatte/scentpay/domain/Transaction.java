@@ -39,4 +39,14 @@ public class Transaction {
     @Temporal(value = TemporalType.TIMESTAMP)
     @Column(name = "recorded_date", nullable = false)
     private Date recordedDate;
+
+    public TransactionDTO toDTO() {
+        return TransactionDTO.builder().id(this.id)
+                .accountId(this.account.getId())
+                .type(this.type)
+                .amount(this.amount)
+                .balance(this.balance)
+                .label(this.label)
+                .recordedDate(this.recordedDate).build();
+    }
 }

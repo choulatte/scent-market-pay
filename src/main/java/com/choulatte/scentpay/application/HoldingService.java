@@ -1,11 +1,17 @@
 package com.choulatte.scentpay.application;
 
 import com.choulatte.scentpay.dto.HoldingDTO;
+import com.choulatte.scentpay.dto.HoldingSummaryDTO;
 
+import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 public interface HoldingService {
-    HoldingDTO getHoldingInfo(long accountId);
-    List<HoldingDTO> getHoldingList(long accountId);
+
+    HoldingSummaryDTO getHoldingSummaryInfo(long accountId);
+    HoldingSummaryDTO getHoldingSummaryInfo(long accountId, Date date);
+    HoldingDTO getHoldingInfo(long holdingId);
+    List<HoldingDTO> getHoldingList(long accountId, Date date);
+    HoldingDTO createHolding(HoldingDTO holdingDTO);
+    HoldingDTO changeHoldingStatusClosed(long holdingId);
 }

@@ -14,25 +14,15 @@ import java.util.Date;
 @AllArgsConstructor
 @Getter
 @Builder
-public class TransactionDTO extends TransactionIdDTO {
+public class TransactionDTO {
 
+    private Long id;
     private Long accountId;
     private TransactionType type;
     private Long amount;
     private Long balance;
     private String label;
     private Date recordedDate;
-
-    public TransactionDTO(Transaction transaction) {
-        super(transaction);
-
-        this.accountId = transaction.getAccount().getId();
-        this.type = transaction.getType();
-        this.amount = transaction.getAmount();
-        this.balance = transaction.getBalance();
-        this.label = transaction.getLabel();
-        this.recordedDate = transaction.getRecordedDate();
-    }
 
     public Transaction toEntity(Account account) {
         return Transaction.builder().account(account)

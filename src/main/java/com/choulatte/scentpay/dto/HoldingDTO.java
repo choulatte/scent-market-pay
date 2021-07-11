@@ -1,5 +1,6 @@
 package com.choulatte.scentpay.dto;
 
+import com.choulatte.scentpay.domain.Account;
 import com.choulatte.scentpay.domain.Holding;
 import com.choulatte.scentpay.domain.HoldingStatusType;
 import lombok.*;
@@ -10,23 +11,24 @@ import java.util.Date;
 @AllArgsConstructor
 @Getter
 @Builder
-public class HoldingDTO extends HoldingIdDTO {
+public class HoldingDTO {
 
+    private Long id;
     private Long accountId;
     private Long amount;
     private Long balance;
+    private Date expiredDate;
     private Date recordedDate;
     private Date lastModifiedDate;
     private HoldingStatusType statusType;
 
-    public HoldingDTO(Holding holding) {
-        super(holding);
-
-        this.accountId = holding.getAccount().getId();
-        this.amount = holding.getAmount();
-        this.balance = holding.getBalance();
-        this.recordedDate = holding.getRecordedDate();
-        this.lastModifiedDate = holding.getLastModifiedDate();
-        this.statusType = holding.getStatusType();
+    public Holding toEntity(Account account) {
+        return Holding.builder().account(account)
+                .amount(this.amount)
+                .balance(account.getBalance())
+                .expiredDate(this.expiredDate)
+                .recordedDate(new Date())
+                .lastModifiedDate(new Date())
+                .statusType(HoldingStatusType.HOLDED).build();
     }
 }
