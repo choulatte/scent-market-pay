@@ -1,6 +1,7 @@
 package com.choulatte.scentpay.domain;
 
 import com.choulatte.scentpay.dto.AccountDTO;
+import com.choulatte.scentpay.exception.AccountIllegalStateException;
 import lombok.*;
 
 import javax.persistence.*;
@@ -68,8 +69,7 @@ public class Account {
     }
 
     public Account applyTransaction(Transaction transaction) {
-        if (!this.userId.equals(transaction.getAccount().getUserId())) return this; // TODO: throw exception
-        if (this.statusType == AccountStatusType.FREEZING || !this.getValidity()) return this; // TODO: throw exception
+        if (this.statusType == AccountStatusType.FREEZING || !this.getValidity()) throw new AccountIllegalStateException();
 
         switch (transaction.getType()) {
             case DEPOSIT:
