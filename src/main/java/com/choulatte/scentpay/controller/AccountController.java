@@ -1,6 +1,8 @@
 package com.choulatte.scentpay.controller;
 
 import com.choulatte.scentpay.application.AccountService;
+import com.choulatte.scentpay.application.HoldingService;
+import com.choulatte.scentpay.application.TransactionService;
 import com.choulatte.scentpay.dto.*;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -15,12 +17,19 @@ import java.util.List;
 public class AccountController {
 
     private final AccountService accountService;
+    private final HoldingService holdingService;
+    private final TransactionService transactionService;
 
     @GetMapping(value = "/")
     @ApiOperation(value = "계좌 정보 조회", notes = "사용자의 계좌 정보를 조회합니다.")
     public ResponseEntity<AccountDTO> getAccountInfo() {
-        return accountService.getAccountInfo(0).map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        return ResponseEntity.ok(accountService.getAccountInfo(2));
+    }
+
+    @PostMapping(value = "/")
+    @ApiOperation(value = "신규 계좌 개설", notes = "사용자의 신규 계좌를 개설합니다.")
+    public ResponseEntity<AccountDTO> createAccount(@RequestBody AccountDTO accountDTO) {
+        return ResponseEntity.ok(accountService.createAccount(accountDTO));
     }
 
     @GetMapping(value = "/holdings")
@@ -38,13 +47,13 @@ public class AccountController {
     @PutMapping(value = "/deposits")
     @ApiOperation(value = "입금", notes = "사용자의 계좌에 입금합니다.")
     public ResponseEntity<TransactionDTO> deposit(@RequestBody DepositReqDTO req) {
-        return ResponseEntity.ok(accountService.deposit(req));
+        return ResponseEntity.ok(transactionService.deposit(req));
     }
 
     @PutMapping(value = "/withdrawals")
     @ApiOperation(value = "출금", notes = "사용자의 계좌에서 출금합니다.")
     public ResponseEntity<TransactionDTO> withdrawal(@RequestBody WithdrawalReqDTO req) {
-        return ResponseEntity.ok(accountService.withdraw(req));
+        return ResponseEntity.ok(transactionService.withdraw(req, holdingService.getHoldingInfo(req.getAccountId())));
     }
 
 }

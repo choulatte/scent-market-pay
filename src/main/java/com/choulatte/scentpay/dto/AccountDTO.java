@@ -26,6 +26,6 @@ public class AccountDTO {
                 .registeredDate(new Date())
                 .lastModifiedDate(new Date())
                 .statusType(AccountStatusType.NORMAL)
-                .validity(this.validity).build();
+                .validity(true).build();
     }
 }
