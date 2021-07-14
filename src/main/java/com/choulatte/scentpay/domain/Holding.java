@@ -2,6 +2,7 @@ package com.choulatte.scentpay.domain;
 
 import com.choulatte.scentpay.dto.HoldingDTO;
 import com.choulatte.scentpay.exception.HoldingIllegalStateException;
+import com.choulatte.scentpay.exception.InvalidRequestException;
 import lombok.*;
 
 import javax.persistence.*;
@@ -62,6 +63,16 @@ public class Holding {
         if (this.statusType == HoldingStatusType.CLOSED) throw new HoldingIllegalStateException();
 
         this.statusType = holdingStatusType;
+        this.lastModifiedDate = new Date();
+
+        return this;
+    }
+
+    public Holding updateExpiredDate(Date date) {
+        if (this.statusType == HoldingStatusType.CLOSED) throw new HoldingIllegalStateException();
+        if (this.expiredDate.after(date)) throw new InvalidRequestException();
+
+        this.expiredDate = date;
         this.lastModifiedDate = new Date();
 
         return this;

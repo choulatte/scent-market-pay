@@ -53,6 +53,11 @@ public class HoldingServiceImpl implements HoldingService {
         return holdingRepository.save(getHolding(holdingId).updateStatus(HoldingStatusType.CLOSED)).toDTO();
     }
 
+    @Override
+    public HoldingDTO extendHolding(long holdingId, Date newExpiredDate) {
+        return holdingRepository.save(getHolding(holdingId).updateExpiredDate(newExpiredDate)).toDTO();
+    }
+
     private Account getAccount(long accountId) {
         return accountRepository.findByIdAndValidityIsTrue(accountId).orElseThrow(AccountNotFoundException::new);
     }

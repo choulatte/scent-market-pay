@@ -14,4 +14,5 @@ public interface HoldingService {
     List<HoldingDTO> getHoldingList(long accountId, Date date);
     HoldingDTO createHolding(HoldingDTO holdingDTO);
     HoldingDTO changeHoldingStatusClosed(long holdingId);
+    HoldingDTO extendHolding(long holdingId, Date newExpiredDate);
 }
