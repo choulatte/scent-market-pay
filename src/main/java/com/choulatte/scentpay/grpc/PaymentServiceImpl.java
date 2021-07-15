@@ -5,6 +5,8 @@ import com.choulatte.pay.grpc.PaymentServiceOuterClass;
 import com.choulatte.scentpay.application.HoldingService;
 import com.choulatte.scentpay.application.TransactionService;
 import com.choulatte.scentpay.dto.HoldingDTO;
+import com.choulatte.scentpay.dto.TransactionDTO;
+import com.choulatte.scentpay.dto.WithdrawalReqDTO;
 import com.choulatte.scentpay.exception.*;
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +25,34 @@ public class PaymentServiceImpl extends PaymentServiceGrpc.PaymentServiceImplBas
     @Override
     @Transactional
     public void doPayment(PaymentServiceOuterClass.TransactionRequest request, StreamObserver<PaymentServiceOuterClass.TransactionResponse> responseObserver) {
-        super.doPayment(request, responseObserver);
+        try {
+            TransactionDTO transactionDTO = transactionService.withdraw(WithdrawalReqDTO.builder().accountId(request.getTransaction().getAccountId())
+                            .amount(request.getTransaction().getAmount())
+                            .label(request.getTransaction().getLabel()).build(),
+                    holdingService.getHoldingSummaryInfo(request.getTransaction().getAccountId()));
+
+            responseObserver.onNext(PaymentServiceOuterClass.TransactionResponse.newBuilder()
+                    .setResult(PaymentServiceOuterClass.Response.newBuilder()
+                            .setResult(PaymentServiceOuterClass.Response.Result.OK).build())
+                    .setTransaction(PaymentServiceOuterClass.Transaction.newBuilder()
+                            .setId(transactionDTO.getId())
+                            .setAccountId(transactionDTO.getAccountId())
+                            .setType(PaymentServiceOuterClass.Transaction.Type.WITHDRAWAL)
+                            .setAmount(transactionDTO.getAmount())
+                            .setBalance(transactionDTO.getBalance())
+                            .setLabel(transactionDTO.getLabel())
+                            .setRecordedDate(transactionDTO.getRecordedDate().getTime()).build()).build());
+        } catch (AccountNotFoundException e) {
+            responseObserver.onNext(PaymentServiceOuterClass.TransactionResponse.newBuilder()
+                    .setResult(PaymentServiceOuterClass.Response.newBuilder()
+                            .setResult(PaymentServiceOuterClass.Response.Result.NOT_FOUND).build()).build());
+        } catch (AccountIllegalStateException | AccountBalanceShortageException e) {
+            responseObserver.onNext(PaymentServiceOuterClass.TransactionResponse.newBuilder()
+                    .setResult(PaymentServiceOuterClass.Response.newBuilder()
+                            .setResult(PaymentServiceOuterClass.Response.Result.CONFLICT).build()).build());
+        }
+
+        responseObserver.onCompleted();
     }
 
     @Override
