@@ -45,7 +45,8 @@ public class HoldingServiceImpl implements HoldingService {
 
     @Override
     public HoldingDTO createHolding(HoldingDTO holdingDTO) {
-        return holdingRepository.save(holdingDTO.toEntity(getAccount(holdingDTO.getAccountId()))).toDTO();
+        return holdingRepository.save(holdingDTO.toEntity(getAccount(holdingDTO.getAccountId()),
+                getHoldingSummaryInfo(holdingDTO.getAccountId()))).toDTO();
     }
 
     @Override
