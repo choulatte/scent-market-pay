@@ -1,13 +1,11 @@
 package com.choulatte.scentpay.config;
 
+import com.choulatte.scentpay.grpc.PaymentServiceImpl;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
-import io.grpc.ServerServiceDefinition;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.List;
 
 @Configuration
 public class GrpcServerConfig {
@@ -16,8 +14,8 @@ public class GrpcServerConfig {
     private int grpcServerPort;
 
     @Bean
-    public Server grpcServer(List<ServerServiceDefinition> grpcServiceList) {
+    public Server grpcServer(PaymentServiceImpl paymentService) {
         return ServerBuilder.forPort(grpcServerPort)
-                .addServices(grpcServiceList).build();
+                .addService(paymentService).build();
     }
 }
