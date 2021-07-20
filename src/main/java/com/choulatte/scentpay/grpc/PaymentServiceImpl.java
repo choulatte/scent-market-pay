@@ -2,6 +2,7 @@ package com.choulatte.scentpay.grpc;
 
 import com.choulatte.pay.grpc.PaymentServiceGrpc;
 import com.choulatte.pay.grpc.PaymentServiceOuterClass;
+import com.choulatte.scentpay.application.AccountService;
 import com.choulatte.scentpay.application.HoldingService;
 import com.choulatte.scentpay.application.TransactionService;
 import com.choulatte.scentpay.dto.HoldingDTO;
@@ -19,6 +20,7 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class PaymentServiceImpl extends PaymentServiceGrpc.PaymentServiceImplBase {
 
+    private final AccountService accountService;
     private final HoldingService holdingService;
     private final TransactionService transactionService;
 
@@ -59,6 +61,10 @@ public class PaymentServiceImpl extends PaymentServiceGrpc.PaymentServiceImplBas
     @Transactional
     public void doHolding(PaymentServiceOuterClass.HoldingRequest request, StreamObserver<PaymentServiceOuterClass.HoldingResponse> responseObserver) {
         try {
+            if (accountService.getAccountInfoList(request.getUserId()).stream().noneMatch(accountDTO -> accountDTO.getUserId() == request.getUserId())) {
+                throw new InvalidRequestException();
+            }
+
             HoldingDTO holdingDTO = holdingService.createHolding(HoldingDTO.builder().accountId(request.getHolding().getAccountId())
                 .amount(request.getHolding().getAmount())
                 .expiredDate(new Date(request.getHolding().getExpiredDate())).build());
