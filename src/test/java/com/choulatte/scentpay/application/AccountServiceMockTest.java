@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -18,8 +19,8 @@ import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayName(value = "Account Service")
-class AccountServiceTest {
+@DisplayName(value = "Account Service Mock Test")
+class AccountServiceMockTest {
 
     @Mock
     private AccountRepository accountRepository;
@@ -33,7 +34,7 @@ class AccountServiceTest {
     }
 
     @Test
-    @DisplayName(value = "Create new account")
+    @DisplayName(value = "Creating user account generates new account")
     public void creatingUserAccountGeneratesNewAccount() {
         // given
         AccountDTO accountDTO = AccountDTO.builder().userId(1L).build();
@@ -54,4 +55,18 @@ class AccountServiceTest {
         assertThat(result.getStatusType(), is(AccountStatusType.NORMAL));
     }
 
+    @Test
+    @DisplayName(value = "Creating user account without user id throws exception")
+    public void creatingUserAccountWithoutUserIdThrowsException() {
+        // given
+        AccountDTO accountDTO = AccountDTO.builder().build();
+
+        when(accountRepository.save(any(Account.class))).thenThrow(RuntimeException.class);
+
+        // when
+        assertThrows(RuntimeException.class, () -> accountService.createAccount(accountDTO));
+
+        // then
+        verify(accountRepository, times(1)).save(any());
+    }
 }
