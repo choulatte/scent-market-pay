@@ -1,7 +1,5 @@
 package com.choulatte.scentpay.grpc;
 
-import com.choulatte.pay.grpc.PaymentServiceGrpc;
-import com.choulatte.pay.grpc.PaymentServiceOuterClass;
 import com.choulatte.scentpay.application.AccountService;
 import com.choulatte.scentpay.application.HoldingService;
 import com.choulatte.scentpay.application.TransactionService;
