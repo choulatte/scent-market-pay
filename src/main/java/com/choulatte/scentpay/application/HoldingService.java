@@ -11,6 +11,7 @@ public interface HoldingService {
     HoldingSummaryDTO getHoldingSummaryInfo(long accountId);
     HoldingSummaryDTO getHoldingSummaryInfo(long accountId, Date date);
     HoldingDTO getHoldingInfo(long holdingId);
+    List<HoldingDTO> getHoldingList(long accountId);
     List<HoldingDTO> getHoldingList(long accountId, Date date);
     HoldingDTO createHolding(HoldingDTO holdingDTO);
     HoldingDTO changeHoldingStatusClosed(long holdingId);

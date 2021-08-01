@@ -59,13 +59,8 @@ public class Holding {
                 .statusType(this.statusType).build();
     }
 
-    public Holding updateStatus(HoldingStatusType holdingStatusType) {
-        if (this.statusType == HoldingStatusType.CLOSED) throw new HoldingIllegalStateException();
-
-        this.statusType = holdingStatusType;
-        this.lastModifiedDate = new Date();
-
-        return this;
+    public Holding updateStatusClosed() {
+        return updateStatus(HoldingStatusType.CLOSED);
     }
 
     public Holding updateExpiredDate(Date date) {
@@ -73,6 +68,15 @@ public class Holding {
         if (this.expiredDate.after(date)) throw new InvalidRequestException();
 
         this.expiredDate = date;
+        this.lastModifiedDate = new Date();
+
+        return this;
+    }
+
+    private Holding updateStatus(HoldingStatusType holdingStatusType) {
+        if (this.statusType == HoldingStatusType.CLOSED) throw new HoldingIllegalStateException();
+
+        this.statusType = holdingStatusType;
         this.lastModifiedDate = new Date();
 
         return this;

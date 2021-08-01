@@ -5,8 +5,11 @@ import com.choulatte.scentpay.dto.*;
 import com.choulatte.scentpay.exception.AccountNotFoundException;
 import com.choulatte.scentpay.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,11 +20,12 @@ public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
 
     @Override
-    public AccountDTO createAccount(AccountDTO accountDTO) {
+    public AccountDTO createAccount(@NotNull AccountDTO accountDTO) {
         return accountRepository.save(accountDTO.toEntity()).toDTO();
     }
 
     @Override
+    @Cacheable(value = "account", key = "#accountId", unless = "#result == null")
     public AccountDTO getAccountInfo(long accountId) {
         return getAccount(accountId).toDTO();
     }
@@ -32,7 +36,8 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountDTO updateAccountInfo(AccountDTO accountDTO) {
+    @CacheEvict(value = "account", key = "#accountDTO.id", condition = "#result != null")
+    public AccountDTO updateAccountInfo(@NotNull AccountDTO accountDTO) {
         return accountRepository.save(getAccount(accountDTO.getId()).updateInfo(accountDTO)).toDTO();
     }
 

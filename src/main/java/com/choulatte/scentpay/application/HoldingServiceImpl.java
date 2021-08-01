@@ -2,7 +2,6 @@ package com.choulatte.scentpay.application;
 
 import com.choulatte.scentpay.domain.Account;
 import com.choulatte.scentpay.domain.Holding;
-import com.choulatte.scentpay.domain.HoldingStatusType;
 import com.choulatte.scentpay.dto.HoldingDTO;
 import com.choulatte.scentpay.dto.HoldingSummaryDTO;
 import com.choulatte.scentpay.exception.AccountNotFoundException;
@@ -12,6 +11,7 @@ import com.choulatte.scentpay.repository.HoldingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,7 +29,7 @@ public class HoldingServiceImpl implements HoldingService {
     }
 
     @Override
-    public HoldingSummaryDTO getHoldingSummaryInfo(long accountId, Date date) {
+    public HoldingSummaryDTO getHoldingSummaryInfo(long accountId, @NotNull Date date) {
         return new HoldingSummaryDTO(getHoldingList(accountId, date));
     }
 
@@ -39,23 +39,28 @@ public class HoldingServiceImpl implements HoldingService {
     }
 
     @Override
-    public List<HoldingDTO> getHoldingList(long accountId, Date date) {
+    public List<HoldingDTO> getHoldingList(long accountId) {
+        return getHoldingList(accountId, new Date());
+    }
+
+    @Override
+    public List<HoldingDTO> getHoldingList(long accountId, @NotNull Date date) {
         return holdingRepository.findByAccountIdAndExpiredDateAfter(accountId, date).stream().map(Holding::toDTO).collect(Collectors.toList());
     }
 
     @Override
-    public HoldingDTO createHolding(HoldingDTO holdingDTO) {
+    public HoldingDTO createHolding(@NotNull HoldingDTO holdingDTO) {
         return holdingRepository.save(holdingDTO.toEntity(getAccount(holdingDTO.getAccountId()),
                 getHoldingSummaryInfo(holdingDTO.getAccountId()))).toDTO();
     }
 
     @Override
     public HoldingDTO changeHoldingStatusClosed(long holdingId) {
-        return holdingRepository.save(getHolding(holdingId).updateStatus(HoldingStatusType.CLOSED)).toDTO();
+        return holdingRepository.save(getHolding(holdingId).updateStatusClosed()).toDTO();
     }
 
     @Override
-    public HoldingDTO extendHolding(long holdingId, Date newExpiredDate) {
+    public HoldingDTO extendHolding(long holdingId, @NotNull Date newExpiredDate) {
         return holdingRepository.save(getHolding(holdingId).updateExpiredDate(newExpiredDate)).toDTO();
     }
 
