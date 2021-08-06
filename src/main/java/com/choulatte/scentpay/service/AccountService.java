@@ -1,10 +1,8 @@
-package com.choulatte.scentpay.application;
+package com.choulatte.scentpay.service;
 
-import com.choulatte.scentpay.domain.Account;
 import com.choulatte.scentpay.dto.*;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface AccountService {
 

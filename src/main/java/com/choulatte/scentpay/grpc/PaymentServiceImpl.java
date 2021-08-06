@@ -1,8 +1,8 @@
 package com.choulatte.scentpay.grpc;
 
-import com.choulatte.scentpay.application.AccountService;
-import com.choulatte.scentpay.application.HoldingService;
-import com.choulatte.scentpay.application.TransactionService;
+import com.choulatte.scentpay.service.AccountService;
+import com.choulatte.scentpay.service.HoldingService;
+import com.choulatte.scentpay.service.TransactionService;
 import com.choulatte.scentpay.dto.HoldingDTO;
 import com.choulatte.scentpay.dto.TransactionDTO;
 import com.choulatte.scentpay.dto.WithdrawalReqDTO;

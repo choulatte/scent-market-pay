@@ -1,4 +1,4 @@
-package com.choulatte.scentpay.application;
+package com.choulatte.scentpay.service;
 
 import com.choulatte.scentpay.dto.HoldingDTO;
 import com.choulatte.scentpay.dto.HoldingSummaryDTO;

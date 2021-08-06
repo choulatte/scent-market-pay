@@ -1,8 +1,8 @@
 package com.choulatte.scentpay.controller;
 
-import com.choulatte.scentpay.application.AccountService;
-import com.choulatte.scentpay.application.HoldingService;
-import com.choulatte.scentpay.application.TransactionService;
+import com.choulatte.scentpay.service.AccountService;
+import com.choulatte.scentpay.service.HoldingService;
+import com.choulatte.scentpay.service.TransactionService;
 import com.choulatte.scentpay.dto.*;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
