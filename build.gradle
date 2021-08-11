@@ -18,11 +18,16 @@ repositories {
     mavenCentral()
 }
 
+ext {
+    set('springCloudVersion', '2020.0.3')
+}
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
     implementation 'io.grpc:grpc-netty:1.38.0'
     implementation 'io.grpc:grpc-protobuf:1.38.0'
@@ -42,6 +47,12 @@ sourceSets {
             srcDirs 'scent-market-grpc/build/generated/source/proto/main/grpc'
             srcDirs 'scent-market-grpc/build/generated/source/proto/main/java'
         }
+    }
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
     }
 }
 
