@@ -1,9 +1,7 @@
 package com.choulatte.scentpay.dto;
 
 import com.choulatte.scentpay.domain.Account;
-import com.choulatte.scentpay.domain.AccountStatusType;
 import com.choulatte.scentpay.domain.Holding;
-import com.choulatte.scentpay.domain.HoldingStatusType;
 import com.choulatte.scentpay.exception.AccountBalanceShortageException;
 import com.choulatte.scentpay.exception.AccountIllegalStateException;
 import lombok.*;
@@ -23,10 +21,10 @@ public class HoldingDTO {
     private Date expiredDate;
     private Date recordedDate;
     private Date lastModifiedDate;
-    private HoldingStatusType statusType;
+    private Holding.StatusType statusType;
 
     public Holding toEntity(Account account, HoldingSummaryDTO holdingSummaryDTO) {
-        if (account.getStatusType() != AccountStatusType.NORMAL) throw new AccountIllegalStateException();
+        if (account.getStatusType() != Account.StatusType.NORMAL) throw new AccountIllegalStateException();
         if (account.getBalance() - holdingSummaryDTO.getAmount() < this.amount) throw new AccountBalanceShortageException();
 
         return Holding.builder().account(account)
@@ -35,6 +33,6 @@ public class HoldingDTO {
                 .expiredDate(this.expiredDate)
                 .recordedDate(new Date())
                 .lastModifiedDate(new Date())
-                .statusType(HoldingStatusType.HOLDED).build();
+                .statusType(Holding.StatusType.HOLDED).build();
     }
 }

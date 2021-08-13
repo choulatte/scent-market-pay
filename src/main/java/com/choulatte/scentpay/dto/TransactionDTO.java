@@ -2,7 +2,6 @@ package com.choulatte.scentpay.dto;
 
 import com.choulatte.scentpay.domain.Account;
 import com.choulatte.scentpay.domain.Transaction;
-import com.choulatte.scentpay.domain.TransactionType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +17,7 @@ public class TransactionDTO {
 
     private Long id;
     private Long accountId;
-    private TransactionType type;
+    private Transaction.Type type;
     private Long amount;
     private Long balance;
     private String label;

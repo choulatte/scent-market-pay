@@ -1,7 +1,6 @@
 package com.choulatte.scentpay.dto;
 
 import com.choulatte.scentpay.domain.Account;
-import com.choulatte.scentpay.domain.AccountStatusType;
 import lombok.*;
 
 import java.util.Date;
@@ -17,7 +16,7 @@ public class AccountDTO {
     private Long balance;
     private Date registeredDate;
     private Date lastModifiedDate;
-    private AccountStatusType statusType;
+    private Account.StatusType statusType;
     private Boolean validity;
 
     public Account toEntity() {
@@ -25,7 +24,7 @@ public class AccountDTO {
                 .balance(0L)
                 .registeredDate(new Date())
                 .lastModifiedDate(new Date())
-                .statusType(AccountStatusType.NORMAL)
+                .statusType(Account.StatusType.NORMAL)
                 .validity(true).build();
     }
 }

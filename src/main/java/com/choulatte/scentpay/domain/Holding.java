@@ -46,7 +46,7 @@ public class Holding {
 
     @Column(name = "status", nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private HoldingStatusType statusType;
+    private Holding.StatusType statusType;
 
     public HoldingDTO toDTO() {
         return HoldingDTO.builder().id(this.id)
@@ -60,11 +60,11 @@ public class Holding {
     }
 
     public Holding updateStatusClosed() {
-        return updateStatus(HoldingStatusType.CLOSED);
+        return updateStatus(Holding.StatusType.CLOSED);
     }
 
     public Holding updateExpiredDate(Date date) {
-        if (this.statusType == HoldingStatusType.CLOSED) throw new HoldingIllegalStateException();
+        if (this.statusType == Holding.StatusType.CLOSED) throw new HoldingIllegalStateException();
         if (this.expiredDate.after(date)) throw new InvalidRequestException();
 
         this.expiredDate = date;
@@ -73,12 +73,17 @@ public class Holding {
         return this;
     }
 
-    private Holding updateStatus(HoldingStatusType holdingStatusType) {
-        if (this.statusType == HoldingStatusType.CLOSED) throw new HoldingIllegalStateException();
+    private Holding updateStatus(Holding.StatusType statusType) {
+        if (this.statusType == Holding.StatusType.CLOSED) throw new HoldingIllegalStateException();
 
-        this.statusType = holdingStatusType;
+        this.statusType = statusType;
         this.lastModifiedDate = new Date();
 
         return this;
+    }
+
+    public enum StatusType {
+        HOLDED,
+        CLOSED
     }
 }

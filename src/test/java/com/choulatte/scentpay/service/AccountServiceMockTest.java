@@ -1,7 +1,6 @@
 package com.choulatte.scentpay.service;
 
 import com.choulatte.scentpay.domain.Account;
-import com.choulatte.scentpay.domain.AccountStatusType;
 import com.choulatte.scentpay.dto.AccountDTO;
 import com.choulatte.scentpay.repository.AccountRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,7 +40,7 @@ class AccountServiceMockTest {
 
         when(accountRepository.save(any(Account.class)))
                 .thenReturn(Account.builder().id(1L).userId(1L).balance(0L)
-                        .statusType(AccountStatusType.NORMAL).validity(true).build());
+                        .statusType(Account.StatusType.NORMAL).validity(true).build());
 
         // when
         AccountDTO result = accountService.createAccount(accountDTO);
@@ -52,7 +51,7 @@ class AccountServiceMockTest {
         assertThat(result.getId() > 0, is(true));
         assertThat(result.getUserId(), is(equalTo(accountDTO.getUserId())));
         assertThat(result.getBalance(), is(0L));
-        assertThat(result.getStatusType(), is(AccountStatusType.NORMAL));
+        assertThat(result.getStatusType(), is(Account.StatusType.NORMAL));
     }
 
     @Test

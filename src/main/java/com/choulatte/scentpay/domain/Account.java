@@ -39,7 +39,7 @@ public class Account {
     @Setter
     @Column(name = "status_type", nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private AccountStatusType statusType;
+    private StatusType statusType;
 
     @Setter
     @Column(name = "validity", nullable = false)
@@ -69,7 +69,7 @@ public class Account {
     }
 
     public Account applyTransaction(Transaction transaction) {
-        if (this.statusType == AccountStatusType.FREEZING || !this.getValidity()) throw new AccountIllegalStateException();
+        if (this.statusType == Account.StatusType.FREEZING || !this.getValidity()) throw new AccountIllegalStateException();
 
         switch (transaction.getType()) {
             case DEPOSIT:
@@ -82,5 +82,11 @@ public class Account {
         this.lastModifiedDate = new Date();
 
         return this;
+    }
+
+    public enum StatusType {
+        NORMAL,
+        PENDING,
+        FREEZING
     }
 }

@@ -25,7 +25,7 @@ public class Transaction {
 
     @Column(name = "type", nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private TransactionType type;
+    private Transaction.Type type;
 
     @Column(name = "amount", nullable = false)
     private Long amount;
@@ -48,5 +48,10 @@ public class Transaction {
                 .balance(this.balance)
                 .label(this.label)
                 .recordedDate(this.recordedDate).build();
+    }
+
+    public enum Type {
+        DEPOSIT,
+        WITHDRAWAL
     }
 }
