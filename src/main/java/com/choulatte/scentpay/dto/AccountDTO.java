@@ -3,13 +3,14 @@ package com.choulatte.scentpay.dto;
 import com.choulatte.scentpay.domain.Account;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Builder
-public class AccountDTO {
+public class AccountDTO implements Serializable {
 
     private Long id;
     private Long userId;
