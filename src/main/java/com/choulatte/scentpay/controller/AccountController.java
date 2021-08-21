@@ -22,37 +22,37 @@ public class AccountController {
 
     @GetMapping(value = "/")
     @ApiOperation(value = "계좌 정보 조회", notes = "사용자의 계좌 정보를 조회합니다.")
-    public ResponseEntity<AccountDTO> getAccountInfo() {
+    public ResponseEntity<AccountDTO> getAccountInfo(@RequestHeader(value = "User-Idx") String userIdx) {
         return ResponseEntity.ok(accountService.getAccountInfo(1));
     }
 
     @PostMapping(value = "/")
     @ApiOperation(value = "신규 계좌 개설", notes = "사용자의 신규 계좌를 개설합니다.")
-    public ResponseEntity<AccountDTO> createAccount(@RequestBody AccountDTO accountDTO) {
+    public ResponseEntity<AccountDTO> createAccount(@RequestHeader(value = "User-Idx") String userIdx, @RequestBody AccountDTO accountDTO) {
         return ResponseEntity.ok(accountService.createAccount(accountDTO));
     }
 
     @GetMapping(value = "/holdings")
     @ApiOperation(value = "홀딩 정보 조회", notes = "사용자의 홀딩 기록을 조회합니다.")
-    public ResponseEntity<HoldingSummaryDTO> getHoldingList() {
+    public ResponseEntity<HoldingSummaryDTO> getHoldingList(@RequestHeader(value = "User-Idx") String userIdx) {
         return ResponseEntity.ok(holdingService.getHoldingSummaryInfo(1));
     }
 
     @GetMapping(value = "/transactions")
     @ApiOperation(value = "거래 기록 조회", notes = "사용자의 거래 기록을 조회합니다.")
-    public ResponseEntity<List<TransactionDTO>> getTransactionList() {
+    public ResponseEntity<List<TransactionDTO>> getTransactionList(@RequestHeader(value = "User-Idx") String userIdx) {
         return ResponseEntity.ok(null);
     }
 
     @PostMapping(value = "/deposits")
     @ApiOperation(value = "입금", notes = "사용자의 계좌에 입금합니다.")
-    public ResponseEntity<TransactionDTO> deposit(@RequestBody DepositReqDTO req) {
+    public ResponseEntity<TransactionDTO> deposit(@RequestHeader(value = "User-Idx") String userIdx, @RequestBody DepositReqDTO req) {
         return ResponseEntity.ok(transactionService.deposit(req));
     }
 
     @PostMapping(value = "/withdrawals")
     @ApiOperation(value = "출금", notes = "사용자의 계좌에서 출금합니다.")
-    public ResponseEntity<TransactionDTO> withdrawal(@RequestBody WithdrawalReqDTO req) {
+    public ResponseEntity<TransactionDTO> withdrawal(@RequestHeader(value = "User-Idx") String userIdx, @RequestBody WithdrawalReqDTO req) {
         return ResponseEntity.ok(transactionService.withdraw(req, holdingService.getHoldingSummaryInfo(req.getAccountId())));
     }
 
